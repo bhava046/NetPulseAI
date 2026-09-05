@@ -1,0 +1,47 @@
+[
+    {
+        "id": "A001",
+        "time": "10:01",
+        "device": "Router-R1",
+        "type": "link_down",
+        "message": "Main WAN link is down",
+        "priority": "HIGH",
+        "status": "Active"
+    },
+    {
+        "id": "A002",
+        "time": "10:02",
+        "device": "Switch-S1",
+        "type": "device_unreachable",
+        "message": "Switch S1 is unreachable",
+        "priority": "HIGH",
+        "status": "Active"
+    },
+    {
+        "id": "A003",
+        "time": "10:03",
+        "device": "Server-S1",
+        "type": "high_latency",
+        "message": "Network latency is above normal",
+        "priority": "MEDIUM",
+        "status": "Active"
+    },
+    {
+        "id": "A004",
+        "time": "10:04",
+        "device": "Router-R1",
+        "type": "authentication_failure",
+        "message": "Repeated authentication failures detected",
+        "priority": "LOW",
+        "status": "Active"
+    },
+    {
+        "id": "A005",
+        "time": "10:05",
+        "device": "Server-S2",
+        "type": "device_unreachable",
+        "message": "Server S2 is unreachable",
+        "priority": "HIGH",
+        "status": "Active"
+    }
+]

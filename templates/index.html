@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NetPulse AI Dashboard</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f1f5f9;
+            color: #172554;
+        }
+
+        .header {
+            background: #19295f;
+            color: white;
+            padding: 28px 45px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+        .subtitle {
+            margin-top: 8px;
+            font-size: 17px;
+        }
+
+        .logout {
+            background: #ef2929;
+            color: white;
+            padding: 13px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .container {
+            padding: 32px 45px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
+            margin-bottom: 28px;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 5px 18px rgba(0,0,0,0.08);
+        }
+
+        .card h2 {
+            font-size: 34px;
+            margin: 10px 0;
+        }
+
+        .card p {
+            color: #55709c;
+            font-size: 17px;
+        }
+
+        .section {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 28px;
+            box-shadow: 0 5px 18px rgba(0,0,0,0.07);
+        }
+
+        .section h2 {
+            margin-bottom: 25px;
+            font-size: 26px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #eef2ff;
+            text-align: left;
+            padding: 15px;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .priority {
+            display: inline-block;
+            padding: 7px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+        .high {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .medium {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .low {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .analyze-btn {
+            background: #19295f;
+            color: white;
+            border: none;
+            padding: 14px 25px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .analyze-btn:hover {
+            background: #263b85;
+        }
+
+        #incidents {
+            margin-top: 25px;
+        }
+
+        .incident {
+            background: #f8fafc;
+            border-left: 6px solid #ef4444;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 12px;
+        }
+
+        .incident h3 {
+            font-size: 22px;
+            margin-bottom: 18px;
+        }
+
+        .incident p {
+            margin: 12px 0;
+            line-height: 1.5;
+        }
+
+        .recommendation {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            padding: 20px;
+            margin-top: 18px;
+            border-radius: 10px;
+        }
+
+        .status-area {
+            margin-top: 20px;
+            padding-top: 18px;
+            border-top: 1px solid #ddd;
+        }
+
+        .status-badge {
+            background: #fee2e2;
+            color: #dc2626;
+            padding: 8px 15px;
+            border-radius: 20px;
+            margin-left: 10px;
+            font-weight: bold;
+        }
+
+        .status-btn {
+            background: #19295f;
+            color: white;
+            border: none;
+            padding: 9px 15px;
+            border-radius: 7px;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+
+        .ai-error {
+            color: red;
+            margin-top: 15px;
+        }
+
+        @media(max-width: 900px) {
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 20px;
+            }
+
+            .header {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <div class="header">
+
+        <div>
+            <div class="logo">🚨 NetPulse AI</div>
+            <div class="subtitle">
+                Network Incident Triage Assistant
+            </div>
+        </div>
+
+        <button class="logout" onclick="location.href='/logout'">
+            🚪 Logout
+        </button>
+
+    </div>
+
+
+    <div class="container">
+
+        <!-- SUMMARY CARDS -->
+        <div class="cards">
+
+            <div class="card">
+                <div>🚨</div>
+                <h2 id="totalAlerts">5</h2>
+                <p>Total Alerts</p>
+            </div>
+
+            <div class="card">
+                <div>🤖</div>
+                <h2 id="detectedIncidents">0</h2>
+                <p>Detected Incidents</p>
+            </div>
+
+            <div class="card">
+                <div>🔴</div>
+                <h2 id="highPriority">0</h2>
+                <p>High Priority</p>
+            </div>
+
+        </div>
+
+
+        <!-- AI INCIDENT ANALYSIS -->
+        <div class="section">
+
+            <h2>🤖 AI Incident Analysis</h2>
+
+            <button class="analyze-btn"
+                    onclick="analyzeNetwork()">
+                🔍 Analyze Network Alerts
+            </button>
+
+            <div id="incidents"></div>
+
+        </div>
+
+
+        <!-- NETWORK ALERTS -->
+        <div class="section">
+
+            <h2>🚨 Incoming Network Alerts</h2>
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Time</th>
+                        <th>Device</th>
+                        <th>Type</th>
+                        <th>Message</th>
+                        <th>Priority</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+
+                <tbody id="alertTable">
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+<script>
+
+async function loadAlerts() {
+
+    try {
+
+        const response = await fetch("/alerts");
+
+        const alerts = await response.json();
+
+        const table = document.getElementById("alertTable");
+
+        table.innerHTML = "";
+
+        alerts.forEach((alert, index) => {
+
+            let priority = "LOW";
+
+            if (index === 0 || index === 1 || index === 4) {
+                priority = "HIGH";
+            }
+            else if (index === 2) {
+                priority = "MEDIUM";
+            }
+
+            table.innerHTML += `
+                <tr>
+
+                    <td>${alert.id}</td>
+
+                    <td>${alert.time}</td>
+
+                    <td>${alert.device}</td>
+
+                    <td>${alert.type}</td>
+
+                    <td>${alert.message}</td>
+
+                    <td>
+                        <span class="priority ${priority.toLowerCase()}">
+                            ${priority}
+                        </span>
+                    </td>
+
+                    <td>Active</td>
+
+                </tr>
+            `;
+
+        });
+
+        document.getElementById("totalAlerts").innerText =
+            alerts.length;
+
+        document.getElementById("highPriority").innerText =
+            alerts.filter((a, i) =>
+                i === 0 || i === 1 || i === 4
+            ).length;
+
+    }
+
+    catch(error) {
+
+        console.log("Alert loading error:", error);
+
+    }
+
+}
+
+
+async function analyzeNetwork() {
+
+    const incidentsDiv =
+        document.getElementById("incidents");
+
+    incidentsDiv.innerHTML =
+        "<p>🤖 AI analyzing network alerts...</p>";
+
+    try {
+
+        const response = await fetch("/analyze");
+
+        const data = await response.json();
+
+        if (!data.incidents) {
+
+            incidentsDiv.innerHTML =
+                "<p class='ai-error'>AI analysis failed.</p>";
+
+            return;
+        }
+
+        document.getElementById("detectedIncidents").innerText =
+            data.incidents.length;
+
+        incidentsDiv.innerHTML = "";
+
+        data.incidents.forEach(incident => {
+
+            const priority =
+                (incident.priority || "MEDIUM").toUpperCase();
+
+            const alerts =
+                Array.isArray(incident.alerts)
+                ? incident.alerts.join(", ")
+                : incident.alerts;
+
+            incidentsDiv.innerHTML += `
+
+                <div class="incident">
+
+                    <h3>
+                        🚨 ${incident.incident_id}
+                        — ${incident.title}
+                    </h3>
+
+                    <p>
+                        <strong>Priority:</strong>
+
+                        <span class="priority ${priority.toLowerCase()}">
+                            ${priority}
+                        </span>
+                    </p>
+
+                    <p>
+                        <strong>Related Alerts:</strong>
+                        ${alerts}
+                    </p>
+
+                    <p>
+                        <strong>Reason:</strong>
+                        ${incident.reason}
+                    </p>
+
+                    <p>
+                        🧠 <strong>Root Cause:</strong>
+                        ${incident.root_cause}
+                    </p>
+
+                    <p>
+                        📚 <strong>Runbook:</strong>
+                        ${incident.runbook}
+                    </p>
+
+                    <p>
+                        📊 <strong>Confidence:</strong>
+                        ${incident.confidence}%
+                    </p>
+
+                    <p>
+                        🌐 <strong>Impact:</strong>
+                        ${incident.impact}
+                    </p>
+
+                    <div class="recommendation">
+
+                        ⚡ <strong>Recommended Action:</strong>
+
+                        <br><br>
+
+                        ${incident.recommendation}
+
+                    </div>
+
+                    <div class="status-area">
+
+                        <strong>Incident Status:</strong>
+
+                        <span class="status-badge">
+                            🔴 Open
+                        </span>
+
+                        <button
+                            class="status-btn"
+                            onclick="changeStatus(this)">
+
+                            Change Status
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            `;
+
+        });
+
+    }
+
+    catch(error) {
+
+        console.log(error);
+
+        incidentsDiv.innerHTML =
+            "<p class='ai-error'>❌ AI service error.</p>";
+
+    }
+
+}
+
+
+function changeStatus(button) {
+
+    const badge =
+        button.parentElement.querySelector(".status-badge");
+
+    if (badge.innerText.includes("Open")) {
+
+        badge.innerText = "🟢 Resolved";
+
+        badge.style.background = "#dcfce7";
+        badge.style.color = "#15803d";
+
+    }
+    else {
+
+        badge.innerText = "🔴 Open";
+
+        badge.style.background = "#fee2e2";
+        badge.style.color = "#dc2626";
+
+    }
+
+}
+
+
+loadAlerts();
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,24 @@
+[
+  {
+    "id": "RB001",
+    "title": "WAN Link Down",
+    "alert_types": ["link_down", "device_unreachable", "high_latency"],
+    "steps": [
+      "Check the physical WAN connection",
+      "Check router interface status",
+      "Verify link connectivity",
+      "Escalate to network engineer if the link remains down"
+    ]
+  },
+  {
+    "id": "RB002",
+    "title": "Authentication Failure",
+    "alert_types": ["authentication_failure"],
+    "steps": [
+      "Check authentication logs",
+      "Verify device credentials",
+      "Check for repeated failed login attempts",
+      "Escalate if the cause is unknown"
+    ]
+  }
+]
