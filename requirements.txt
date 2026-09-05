@@ -1,5 +1,4 @@
-flask
-google-generativeai
+Flask
+google-genai
 gunicorn
 numpy
-
